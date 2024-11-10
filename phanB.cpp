@@ -398,24 +398,18 @@ class CuaHang{
 		void thongke() {
 		    cout << "\nThong ke so luong mat hang ton kho: " << endl;
 		    for (int i = 0; i < mathang.get_size(); i++) {
-		        int soLuongTon = 0;
+		        int soLuongTon_file = 0;
 		        for (int j = 0; j < mathang.get_size(); j++) {
 		            if (mathang[i].get_mahang() == mathang[j].get_mahang()) {
-		                soLuongTon += mathang[j].get_sl();
-		            }
-		        }
-
-				for (int j = 0; j < newmh.get_size(); j++) {
-		            if (newmh[j].get_mahang() == mathang[i].get_mahang()){
-		                soLuongTon += newmh[j].get_sl();
+		                soLuongTon_file += mathang[j].get_sl();
 		            }
 		        }
 				for (int j = 0; j < hd.get_size(); j++) {
 		            if (hd[j].get_loaihd() == "Sell" && hd[j].get_mahang() == mathang[i].get_mahang()) {
-		                soLuongTon -= hd[j].get_slg();
+		                soLuongTon_file -= hd[j].get_slg();
 		            }
 		        }
-		        cout << "Ma hang: " << mathang[i].get_mahang() << " , Ten hang: " << mathang[i].get_tenhang() << " , So luong ton kho: " << soLuongTon << endl;
+		        cout << "Ma hang: " << mathang[i].get_mahang() << " , Ten hang: " << mathang[i].get_tenhang() << " , So luong ton kho: " << soLuongTon_file << endl;
 		    }
 		    if (newmh.get_size() == 0) {
 		        cout << "Khong co mat hang nao duoc nhap." << endl;
@@ -428,15 +422,20 @@ class CuaHang{
 		                break;
 		            }
 		        }
-		
+				int soLuongTon_nhap = 0;
+				for (int j = 0; j < newmh.get_size(); j++) {
+		            if (newmh[j].get_mahang() == mathang[i].get_mahang()){
+		                soLuongTon_nhap += newmh[j].get_sl();
+		            }
+		        }
 		        if (!found) {
-		            int soLuongTon = newmh[i].get_sl();
+		            int soLuongTon_nhap = newmh[i].get_sl();
 		            for (int j = 0; j < hd.get_size(); j++) {
 		                if (hd[j].get_loaihd() == "Sell" && hd[j].get_mahang() == newmh[i].get_mahang()) {
-		                    soLuongTon -= hd[j].get_slg();
+		                    soLuongTon_nhap -= hd[j].get_slg();
 		                }
 		            }
-		            cout << "Ma hang: " << newmh[i].get_mahang() << " , Ten hang: " << newmh[i].get_tenhang() << " , So luong ton kho: " << soLuongTon << endl;
+		            cout << "Ma hang: " << newmh[i].get_mahang() << " , Ten hang: " << newmh[i].get_tenhang() << " , So luong ton kho: " << soLuongTon_nhap << endl;
 		        }
 		    }
 		}
