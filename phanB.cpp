@@ -140,7 +140,7 @@ class DanhMuc{
 	public:
 		DanhMuc(): mahang(""), tenhang(""), nsx(""), sl(0){}
 		
-		DanhMuc(string ma, string ten, string sx): mahang(ma), tenhang(ten), nsx(sx), sl(sl){}
+		DanhMuc(string ma, string ten, string sx, int sl): mahang(ma), tenhang(ten), nsx(sx), sl(sl){}
 		
 		void display(){
 			cout<<"Ma hang: "<<mahang<<" , Ten hang: "<<tenhang<<" , Nha san xuat: "<<nsx<<" , So luong: "<<sl<<endl;
