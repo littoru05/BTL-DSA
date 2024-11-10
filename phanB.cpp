@@ -422,8 +422,8 @@ class CuaHang{
 		                break;
 		            }
 		        }
-				int soLuongTon_nhap = 0;
-				for (int j = 0; j < newmh.get_size(); j++) {
+			int soLuongTon_nhap = 0;
+			for (int j = 0; j < newmh.get_size(); j++) {
 		            if (newmh[j].get_mahang() == mathang[i].get_mahang()){
 		                soLuongTon_nhap += newmh[j].get_sl();
 		            }
