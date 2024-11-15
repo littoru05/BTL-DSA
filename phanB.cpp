@@ -12,24 +12,24 @@ class Vector{
 		int capacity;
 	public:
 		// Tra ve iterator toi phan tu dau tien
-	    T* begin(){
-	        return data;
-	    }
+	    	T* begin(){
+			return data;
+	    	}
 	
-	    // Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
-	    T* end(){
-	        return data + size;
-	    }
-	
-	    // Tra ve reverse iterator toi phan tu cuoi cung
-	    reverse_iterator<T*> rbegin(){
-	        return reverse_iterator<T*>(end());
-	    }
-	
-	    // Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
-	    reverse_iterator<T*> rend(){
-	        return reverse_iterator<T*>(begin());
-	    }
+		 // Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
+		T* end(){
+			return data + size;
+		}
+		
+	    	// Tra ve reverse iterator toi phan tu cuoi cung
+		reverse_iterator<T*> rbegin(){
+			return reverse_iterator<T*>(end());
+		}
+		
+		// Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
+		reverse_iterator<T*> rend(){
+			return reverse_iterator<T*>(begin());
+		}
 		// Ham tao
 		Vector(): size(0), capacity(1){
 			data = new T[capacity];
