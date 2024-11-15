@@ -1,4 +1,5 @@
 #include<iostream>
+#include<iterator>
 #include<fstream>
 #include<string>
 using namespace std;
@@ -10,6 +11,25 @@ class Vector{
 		int size;
 		int capacity;
 	public:
+		// Tra ve iterator toi phan tu dau tien
+	    T* begin(){
+	        return data;
+	    }
+	
+	    // Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
+	    T* end(){
+	        return data + size;
+	    }
+	
+	    // Tra ve reverse iterator toi phan tu cuoi cung
+	    reverse_iterator<T*> rbegin(){
+	        return reverse_iterator<T*>(end());
+	    }
+	
+	    // Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
+	    reverse_iterator<T*> rend(){
+	        return reverse_iterator<T*>(begin());
+	    }
 		// Ham tao
 		Vector(): size(0), capacity(1){
 			data = new T[capacity];
@@ -95,11 +115,11 @@ class Vector{
 			data[index] = value;
 			++size;
 		}
-		// Clear
+		// Xoa cac phan tu trong vector
 		void clear(){ 
 			size = 0;
 		}
-		// Assign
+		// Gan gia tri cho cac phan tu trong vector
 		void assign(int count, const T& value) {
 			if (count > capacity) { 
 				resize(count);
@@ -109,26 +129,27 @@ class Vector{
 			} 
 			size = count;
 		}
-		// Reserve 
+		// Cap du dung luong cho vector ma ko thay doi bo nho
 		void reserve(int new_capacity){
 			if(new_capacity > capacity){
 				resize(new_capacity); 
 			}
 		} 
-		// Swap 
+		// Hoan vi 
 		void swap(Vector& other){ 
 			swap(data, other.data);
 			swap(size, other.size); 
 			swap(capacity, other.capacity); 
 		}
-		// Max_size 
+		// Tra ve dung luong toi da 
 		int max_size() const {
 			return capacity; 
 		}
-		// Empty 
+		// Kiem tra rong 
 		bool empty() const{ 
 			return size == 0;
 		}
+		
 };
 
 class DanhMuc{
@@ -167,7 +188,7 @@ class DanhMuc{
         }
         
 		friend ostream& operator<<(ostream& os, const DanhMuc& mathang) {
-		    os << mathang.mahang << "," << mathang.tenhang << "," << mathang.nsx << ","<< mathang.sl << endl;
+			os<<"Ma hang: "<<mathang.mahang<<" , Ten hang: "<<mathang.tenhang<<" , Nha san xuat: "<<mathang.nsx<<" , So luong: "<<mathang.sl<<endl;
 		    return os;
 		}		
 				
@@ -212,7 +233,7 @@ class HoaDon{
 		HoaDon(string hd, string ma, string loai, int solg, int day, int price):mahd(hd), mahang(ma), loaihd(loai), slg(solg), ngay(day), gia(price){}
 		
 		void display(){
-			cout<<mahd<<" , "<<mahang<<" , "<<loaihd<<" , "<<slg<<" , "<<ngay<<" , "<<gia<<endl;
+			cout<<"Ma hoa don: "<<mahd<<" ,Ma hang: "<<mahang<<" ,Loai hoa don: "<<loaihd<<" ,So luong hoa don: "<<slg<<" ,Ngay mua/ban: "<<ngay<<" ,Gia: "<<gia<<endl;
 		}
 		
 		string get_loaihd(){
@@ -228,7 +249,7 @@ class HoaDon{
 		}
 		
 		friend ostream& operator<<(ostream& os, const HoaDon& hd) {
-		    os << hd.mahd << "," << hd.mahang << "," << hd.loaihd << "," << hd.slg << "," << hd.ngay << "," << hd.gia << endl;
+			os<<"Ma hoa don: "<<hd.mahd<<" ,Ma hang: "<<hd.mahang<<" ,Loai hoa don: "<<hd.loaihd<<" ,So luong hoa don: "<<hd.slg<<" ,Ngay mua/ban: "<<hd.ngay<<" ,Gia: "<<hd.gia<<endl;
 		    return os;
 		}
 
@@ -422,8 +443,8 @@ class CuaHang{
 		                break;
 		            }
 		        }
-			int soLuongTon_nhap = 0;
-			for (int j = 0; j < newmh.get_size(); j++) {
+				int soLuongTon_nhap = 0;
+				for (int j = 0; j < newmh.get_size(); j++) {
 		            if (newmh[j].get_mahang() == mathang[i].get_mahang()){
 		                soLuongTon_nhap += newmh[j].get_sl();
 		            }
@@ -490,4 +511,3 @@ int main(){
             }
 		} while(choice != 0);
 }
-
