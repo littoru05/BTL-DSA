@@ -514,6 +514,7 @@ class CuaHang{
 		            }
 		        } while (trunglap); 
 		        newmh.push_back(mh);
+			mathang.push_back(mh);			
 			}
 			cout<<"\nDa nhap mat hang."<<endl;
 		}
