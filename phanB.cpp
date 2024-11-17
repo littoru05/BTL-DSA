@@ -2,6 +2,7 @@
 #include<iterator>
 #include<fstream>
 #include<string>
+#include<stdexcept>
 using namespace std;
 
 template<class T>
@@ -11,25 +12,6 @@ class Vector{
 		int size;
 		int capacity;
 	public:
-		// Tra ve iterator toi phan tu dau tien
-	    T* begin(){
-	        return data;
-	    }
-	
-	    // Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
-	    T* end(){
-	        return data + size;
-	    }
-	
-	    // Tra ve reverse iterator toi phan tu cuoi cung
-	    reverse_iterator<T*> rbegin(){
-	        return reverse_iterator<T*>(end());
-	    }
-	
-	    // Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
-	    reverse_iterator<T*> rend(){
-	        return reverse_iterator<T*>(begin());
-	    }
 		// Ham tao
 		Vector(): size(0), capacity(1){
 			data = new T[capacity];
@@ -38,22 +20,18 @@ class Vector{
 		~Vector(){
 			delete []data;
 		}
-		// Lay kich thuoc hien tai
-		int get_size(){
-			return size;
+	//Modifiers
+		// Gan gia tri cho cac phan tu trong vector
+		void assign(int count, const T& value) {
+			if(count > capacity){ 
+				resize(count);
+			}
+			for(int i = 0; i < count; ++i){
+				data[i] = value; 
+			} 
+			size = count;
 		}
-		// gioi han kich thuoc
-		void resize(int new_size) {
-		    if (new_size <= capacity) return; 
-		    capacity = new_size;
-		    T* new_data = new T[capacity];
-		    for (int i = 0; i < size; ++i) {
-		        new_data[i] = data[i];
-		    }
-		    delete[] data;
-		    data = new_data;
-		}
-		// Them phan tu vao vector
+		// Them phan tu vao cuoi vector
 		void push_back(const T& v){
 			if(size == capacity){
 				capacity *= 2;
@@ -66,15 +44,35 @@ class Vector{
 			}
 			data[size++] = v;
 		}
-		// Lay phan tu theo chi so
-		T& operator[](int index){
-			return data[index];
+		//Xoa phan tu o cuoi vector
+		void pop_back() {
+		    if(size > 0){
+		        --size; 
+		    } 
+			else{
+				cout << "Vector da rong" << endl;
+		    }
 		}
-		//Hien thi vector
-		void display() const {
-			for(int i=0; i<size; i++){
-				cout<<data[i]<<endl;
+		//Them phan tu
+		void insert(int index, const T& value){
+			if(index < 0 || index > size){
+				cout<<"\nNgoai pham vi"<<endl;
+				return;
 			}
+			if(size == capacity){
+				capacity *= 2;
+				T* new_data = new T[capacity];
+				for(int i=0; i<size; i++){
+					new_data[i] = data[i];
+				}
+				delete[] data;
+				data = new_data;
+			}
+			for(int i=size; i>index; i--){
+					data[i] = data[i-1];
+			}
+			data[index] = value;
+			++size;
 		}
 		//Xoa phan tu
 		void erase(const T& value){
@@ -95,39 +93,147 @@ class Vector{
 				cout<<"Khong tim thay phan tu"<<endl;
 			}
 		}
-		//Them phan tu
-		void insert(int index, const T& value){
-			if(index < 0 || index > size){
-				cout<<"\nNgoai pham vi"<<endl;
-				return;
-			}
-			if(size == capacity){
-				capacity *= 2;
-				T* new_data = new T[capacity];
-				for(int i=0; i<size; i++){
-					new_data[i] = data[i];
-				}
-				delete[] data;
-			}
-			for(int i=size; i>index; i--){
-					data[i] = data[i-1];
-			}
-			data[index] = value;
-			++size;
+		// Xoa phan tu tu start den end
+		void erase(int start, int end){
+		    if(start < 0 || end >= size || start > end){
+		        cout << "Vi tri khong hop ly" << endl;
+		        return;
+		    }
+		    for (int i = end + 1; i < size; ++i) {
+		        data[i - (end - start + 1)] = data[i];
+		    }
+		    size -= (end - start + 1);
+		}
+		// Them phan tu tai vi tri cu the
+		void emplace(int index, T&& value) {
+		    if(index < 0 || index > size){
+		        cout << "\nNgoai pham vi" << endl;
+		        return;
+		    }
+		    if(size == capacity){
+		        capacity *= 2;
+		        T* new_data = new T[capacity];
+		        for(int i = 0; i < size; i++){
+		            new_data[i] = data[i];
+		        }
+		        delete[] data;
+		        data = new_data;
+		    }
+		    for(int i = size; i > index; i--){
+		        data[i] = data[i - 1];
+		    }
+		    data[index] = value;
+		    ++size;
+		}
+		//Them phan tu vao vi tri cuoi
+		void emplace_back(const T& value){
+		    if(size == capacity){
+		        capacity *= 2;
+		        T* new_data = new T[capacity];
+		        for(int i = 0; i < size; ++i){
+		            new_data[i] = data[i];
+		        }
+		        delete[] data;
+		        data = new_data;
+		    }
+		    data[size++] = value;
+		}
+		// Hoan vi 
+		void swap(Vector& other){ 
+			swap(data, other.data);
+			swap(size, other.size); 
+			swap(capacity, other.capacity); 
 		}
 		// Xoa cac phan tu trong vector
 		void clear(){ 
 			size = 0;
 		}
-		// Gan gia tri cho cac phan tu trong vector
-		void assign(int count, const T& value) {
-			if (count > capacity) { 
-				resize(count);
+	//Iterators
+		// Tra ve iterator toi phan tu dau tien
+		T* begin(){
+		    return data;
+		}
+		
+		// Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
+		T* end(){
+		    return data + size;
+		}
+		
+		// Tra ve reverse iterator toi phan tu cuoi cung
+		reverse_iterator<T*> rbegin(){
+		    return reverse_iterator<T*>(end());
+		}
+		
+		// Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
+		reverse_iterator<T*> rend(){
+		    return reverse_iterator<T*>(begin());
+		}	
+	//Capacity
+		// Lay kich thuoc hien tai cua vector
+		int get_size(){
+			return size;
+		}
+		// Tra ve kich thuoc toi da cua vector
+		int max_size() const{
+			return capacity; 
+		}
+		//Tra ve dung luong hien tai cua vector
+		int get_capacity(){
+			return capacity;
+		}
+		// Thay doi kich thuoc
+		void resize(int new_size){
+		    if(new_size <= capacity){
+		    	return; 	
 			}
-			for(int i = 0; i < count; ++i){
-				data[i] = value; 
-			} 
-			size = count;
+		    capacity = new_size;
+		    T* new_data = new T[capacity];
+		    for(int i = 0; i < size; ++i){
+		        new_data[i] = data[i];
+		    }
+		    delete[] data;
+		    data = new_data;
+		}
+		//Thay doi kich thuoc va gan gia tri
+		void resize(int new_size, const T& value){
+		    if(new_size <= capacity){
+		        size = new_size;
+		    } 
+			else{
+		        capacity = new_size;
+		        T* new_data = new T[capacity];
+		        for(int i = 0; i < size; ++i){
+		            new_data[i] = data[i];
+		        }
+		        for(int i = size; i < new_size; ++i){
+		            new_data[i] = value;
+		        }
+		        delete[] data;
+		        data = new_data;
+		        size = new_size;
+		    }
+		}
+		//Hien thi vector
+		void display() const{
+			for(int i=0; i<size; i++){
+				cout<<data[i]<<endl;
+			}
+		}
+		// Kiem tra rong 
+		bool empty() const{ 
+			return size == 0;
+		}
+		// Thu gon dung luong cua vector va kich thuoc phan tu
+		void shrink_to_fit(){
+		    if(size < capacity){
+		        capacity = size;
+		        T* new_data = new T[capacity];
+		        for(int i = 0; i < size; ++i){
+		            new_data[i] = data[i];
+		        }
+		        delete[] data;
+		        data = new_data;
+		    }
 		}
 		// Cap du dung luong cho vector ma ko thay doi bo nho
 		void reserve(int new_capacity){
@@ -135,21 +241,36 @@ class Vector{
 				resize(new_capacity); 
 			}
 		} 
-		// Hoan vi 
-		void swap(Vector& other){ 
-			swap(data, other.data);
-			swap(size, other.size); 
-			swap(capacity, other.capacity); 
+	//Element access
+		//Truy cap phan tu va kiem tra loi
+		T& at(int index){
+		    if(index < 0 || index >= size){
+		        throw out_of_range("Phan tu ngoai pham vi"); 
+		    }
+		    return data[index];
 		}
-		// Tra ve dung luong toi da 
-		int max_size() const {
-			return capacity; 
+		// Lay du lieu cua vector
+		T& get_data(){
+		    return data;
 		}
-		// Kiem tra rong 
-		bool empty() const{ 
-			return size == 0;
+		// Lay phan tu dau tien
+		T& front(){
+		    if(size == 0){
+		        throw out_of_range("Vector rong");
+		    }
+		    return data[0];
 		}
-		
+		// Lay phan tu cuoi cung
+		T& back(){
+		    if(size == 0){
+		        throw out_of_range("Vector rong");
+		    }
+		    return data[size - 1];
+		}
+		// Lay phan tu theo chi so
+		T& operator[](int index){
+		    return data[index];
+		}
 };
 
 class DanhMuc{
@@ -184,7 +305,7 @@ class DanhMuc{
         }
 		
 		bool operator==(const DanhMuc& other) const {
-            return (mahang == other.mahang) && (tenhang == other.tenhang) && (nsx == other.nsx) && (sl == other.sl);
+            return (this->mahang == other.mahang) && (this->tenhang == other.tenhang);
         }
         
 		friend ostream& operator<<(ostream& os, const DanhMuc& mathang) {
@@ -193,9 +314,9 @@ class DanhMuc{
 		}		
 				
 		friend istream& operator>>(istream& is, DanhMuc& mathang){
-			cout<<"Nhap ma hang: "<<mathang.mahang;
+			cout<<"Nhap ma hang: ";
 			is >> mathang.mahang;
-			cout<<"Nhap ten hang: "<<mathang.tenhang;
+			cout<<"Nhap ten hang: ";
 			is >> mathang.tenhang;
 			cout<<"Nhap nha san xuat: ";
 			is >> mathang.nsx;
@@ -352,18 +473,30 @@ class CuaHang{
 			if(s<=0){
 				return;
 			}
+			
 			for (int i = 0; i < s; i++){
 				DanhMuc mh;
-				cin >> mh;
-				mathang.push_back(mh);
-				newmh.push_back(mh);
+				bool trunglap = false;
+				do {
+		            cout << "Nhap mat hang thu " << (i + 1) << ":\n";
+		            cin >> mh;
+		            trunglap = false;
+		            for(int j = 0; j < mathang.get_size(); j++){
+		                if(mh.get_mahang() == mathang[j].get_mahang() || mh.get_tenhang() == mathang[j].get_tenhang()){ 
+		                    trunglap = true;
+		                    cout << "Da co mat hang nay, vui long nhap lai...\n";
+		                    break;
+		                }
+		            }
+		        } while (trunglap); 
+		        newmh.push_back(mh);
 			}
 			cout<<"\nDa nhap mat hang."<<endl;
 		}
 		
 		void xuatmathang(){
 			if(newmh.get_size()==0){
-				cout<<"\nKhong co mat hang nao"<<endl;
+				cout<<"\nKhong co mat hang nao duoc nhap."<<endl;
 			}
 			else{
 				cout<<"\nDanh sach mat hang la: "<<endl;
@@ -389,7 +522,7 @@ class CuaHang{
 		
 		void xuathoadon(){
 			if(newhd.get_size()==0){
-				cout<<"\nKhong co hoa don nao"<<endl;
+				cout<<"\nKhong co hoa don nao duoc nhap."<<endl;
 			}
 			cout<<"\nDanh sach hoa don: "<<endl;
 			newhd.display();
@@ -415,11 +548,33 @@ class CuaHang{
 				newmh.display();
 			}
 		}
-		
+
+		void hienthihoadon(const string& filename){
+			ifstream file(filename);
+			if(!file){
+				cout<<"Khong mo duoc file"<<endl;
+				return;
+			}
+			HoaDon hoadon;
+			cout<<"\nDanh sach hoa don tu file: "<<endl;
+			while(file >> hoadon){
+				hoadon.display();
+			}
+			file.close();
+			if(newhd.get_size()==0){
+				cout<<"\nKhong co hoa don nao duoc nhap tu nguoi dung"<<endl;
+			}
+			else{
+				cout<<"\nDanh sach hoa don da nhap tu nguoi dung: "<<endl;
+				newhd.display();
+			}
+		}
+				
 		void thongke() {
 		    cout << "\nThong ke so luong mat hang ton kho: " << endl;
 		    for (int i = 0; i < mathang.get_size(); i++) {
 		        int soLuongTon_file = 0;
+		        int vt=0;
 		        for (int j = 0; j < mathang.get_size(); j++) {
 		            if (mathang[i].get_mahang() == mathang[j].get_mahang()) {
 		                soLuongTon_file += mathang[j].get_sl();
@@ -428,12 +583,22 @@ class CuaHang{
 				for (int j = 0; j < hd.get_size(); j++) {
 		            if (hd[j].get_loaihd() == "Sell" && hd[j].get_mahang() == mathang[i].get_mahang()) {
 		                soLuongTon_file -= hd[j].get_slg();
+		                vt += j;
 		            }
 		        }
-		        cout << "Ma hang: " << mathang[i].get_mahang() << " , Ten hang: " << mathang[i].get_tenhang() << " , So luong ton kho: " << soLuongTon_file << endl;
-		    }
+		        if(soLuongTon_file<0){
+		            	cout << "\nMa hang: " << mathang[i].get_mahang() << endl;
+						cout << "Ten hang: " << mathang[i].get_tenhang() << endl;
+						cout << "So luong ton kho: Chi ban duoc "<<mathang[i].get_sl()<<" mat hang , con "<<hd[vt].get_slg() - mathang[i].get_sl()<<" mat hang khong the ban duoc vi het hang"<<endl;
+					}
+					else{
+		          		cout << "\nMa hang: " << mathang[i].get_mahang() << endl;
+						cout << "Ten hang: " << mathang[i].get_tenhang() << endl;
+						cout << "So luong ton kho: " << soLuongTon_file << endl;
+					}
+		        }
 		    if (newmh.get_size() == 0) {
-		        cout << "Khong co mat hang nao duoc nhap." << endl;
+		        cout << "\nKhong co mat hang nao duoc nhap." << endl;
 		    }
 		    for (int i = 0; i < newmh.get_size(); i++) {
 		        bool found = false;
@@ -451,12 +616,23 @@ class CuaHang{
 		        }
 		        if (!found) {
 		            int soLuongTon_nhap = newmh[i].get_sl();
+		            int pos = 0;
 		            for (int j = 0; j < hd.get_size(); j++) {
 		                if (hd[j].get_loaihd() == "Sell" && hd[j].get_mahang() == newmh[i].get_mahang()) {
 		                    soLuongTon_nhap -= hd[j].get_slg();
+		                    pos += j;
 		                }
 		            }
-		            cout << "Ma hang: " << newmh[i].get_mahang() << " , Ten hang: " << newmh[i].get_tenhang() << " , So luong ton kho: " << soLuongTon_nhap << endl;
+		            if(soLuongTon_nhap<0){
+		            	cout << "\nMa hang: " << newmh[i].get_mahang() << endl;
+						cout << "Ten hang: " << newmh[i].get_tenhang() << endl;
+						cout << "So luong ton kho: Chi ban duoc "<<newmh[i].get_sl()<<" mat hang , con "<<hd[pos].get_slg() - newmh[i].get_sl()<<" mat hang khong the ban duoc vi het hang"<<endl;
+					}
+					else{
+		          		cout << "\nMa hang: " << newmh[i].get_mahang() << endl;
+						cout << "Ten hang: " << newmh[i].get_tenhang() << endl;
+						cout << "So luong ton kho: " << soLuongTon_nhap << endl;
+					}
 		        }
 		    }
 		}
@@ -476,7 +652,8 @@ int main(){
         cout << "3. Nhap hoa don" << endl;
         cout << "4. Hien thi hoa don da nhap"<<endl;
         cout << "5. Hien thi danh sach mat hang" << endl;
-        cout << "6. Thong ke mat hang ton kho" << endl;
+        cout << "6. Hien thi danh sach hoa don" << endl;
+        cout << "7. Thong ke mat hang ton kho" << endl;
         cout << "0. Thoat" << endl;
         cout << "Chon chuc nang: ";
         cin >> choice;
@@ -500,6 +677,9 @@ int main(){
                 ch.hienthimathang("mathang.txt"); 
                 break;
             case 6:
+                ch.hienthihoadon("hoadon.txt"); 
+                break;
+            case 7:
                 ch.thongke();
                 break;
             case 0:
