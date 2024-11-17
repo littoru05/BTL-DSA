@@ -12,6 +12,15 @@ class Vector{
 		int size;
 		int capacity;
 	public:
+		// Ham tao
+		Vector(): size(0), capacity(1){
+			data = new T[capacity];
+		}
+		// Ham huy
+		~Vector(){
+			delete []data;
+		}
+	//Iterators
 		// Tra ve iterator toi phan tu dau tien
 	    	T* begin(){
 			return data;
@@ -30,14 +39,6 @@ class Vector{
 		// Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
 		reverse_iterator<T*> rend(){
 			return reverse_iterator<T*>(begin());
-		}
-		// Ham tao
-		Vector(): size(0), capacity(1){
-			data = new T[capacity];
-		}
-		// Ham huy
-		~Vector(){
-			delete []data;
 		}
 	//Modifiers
 		// Gan gia tri cho cac phan tu trong vector
@@ -123,7 +124,6 @@ class Vector{
 		    }
 		    size -= (end - start + 1);
 		}
-<<<<<<< HEAD
 		// Them phan tu tai vi tri cu the
 		void emplace(int index, T&& value) {
 		    if(index < 0 || index > size){
@@ -158,7 +158,6 @@ class Vector{
 		    }
 		    data[size++] = value;
 		}
-=======
 		// Xoa cac phan tu trong vector
 		void clear(){ 
 			size = 0;
@@ -179,38 +178,16 @@ class Vector{
 				resize(new_capacity); 
 			}
 		} 
->>>>>>> 0ef4c586a2fc3e5f8cceb78f4bf09b2f1c464668
 		// Hoan vi 
 		void swap(Vector& other){ 
 			swap(data, other.data);
 			swap(size, other.size); 
 			swap(capacity, other.capacity); 
 		}
-<<<<<<< HEAD
 		// Xoa cac phan tu trong vector
 		void clear(){ 
 			size = 0;
 		}
-	//Iterators
-		// Tra ve iterator toi phan tu dau tien
-		T* begin(){
-		    return data;
-		}
-		
-		// Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
-		T* end(){
-		    return data + size;
-		}
-		
-		// Tra ve reverse iterator toi phan tu cuoi cung
-		reverse_iterator<T*> rbegin(){
-		    return reverse_iterator<T*>(end());
-		}
-		
-		// Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
-		reverse_iterator<T*> rend(){
-		    return reverse_iterator<T*>(begin());
-		}	
 	//Capacity
 		// Lay kich thuoc hien tai cua vector
 		int get_size(){
@@ -262,17 +239,14 @@ class Vector{
 				cout<<data[i]<<endl;
 			}
 		}
-=======
 		// Tra ve dung luong toi da 
 		int max_size() const {
 			return capacity; 
 		}
->>>>>>> 0ef4c586a2fc3e5f8cceb78f4bf09b2f1c464668
 		// Kiem tra rong 
 		bool empty() const{ 
 			return size == 0;
 		}
-<<<<<<< HEAD
 		// Thu gon dung luong cua vector va kich thuoc phan tu
 		void shrink_to_fit(){
 		    if(size < capacity){
@@ -321,9 +295,6 @@ class Vector{
 		T& operator[](int index){
 		    return data[index];
 		}
-=======
-		
->>>>>>> 0ef4c586a2fc3e5f8cceb78f4bf09b2f1c464668
 };
 
 class DanhMuc{
