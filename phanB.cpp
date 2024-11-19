@@ -22,24 +22,24 @@ class Vector{
 		}
 	//Iterators
 		// Tra ve iterator toi phan tu dau tien
-	    	T* begin(){
-			return data;
-	    	}
-	
-		 // Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
-		T* end(){
-			return data + size;
+		T* begin(){
+		    return data;
 		}
 		
-	    	// Tra ve reverse iterator toi phan tu cuoi cung
+		// Tra ve iterator toi phan tu ngay sau phan tu cuoi cung
+		T* end(){
+		    return data + size;
+		}
+		
+		// Tra ve reverse iterator toi phan tu cuoi cung
 		reverse_iterator<T*> rbegin(){
-			return reverse_iterator<T*>(end());
+		    return reverse_iterator<T*>(end());
 		}
 		
 		// Tra ve reverse iterator toi phan tu ngay truoc phan tu dau tien
 		reverse_iterator<T*> rend(){
-			return reverse_iterator<T*>(begin());
-		}
+		    return reverse_iterator<T*>(begin());
+		}	
 	//Modifiers
 		// Gan gia tri cho cac phan tu trong vector
 		void assign(int count, const T& value) {
@@ -158,26 +158,6 @@ class Vector{
 		    }
 		    data[size++] = value;
 		}
-		// Xoa cac phan tu trong vector
-		void clear(){ 
-			size = 0;
-		}
-		// Gan gia tri cho cac phan tu trong vector
-		void assign(int count, const T& value) {
-			if (count > capacity) { 
-				resize(count);
-			}
-			for(int i = 0; i < count; ++i){
-				data[i] = value; 
-			} 
-			size = count;
-		}
-		// Cap du dung luong cho vector ma ko thay doi bo nho
-		void reserve(int new_capacity){
-			if(new_capacity > capacity){
-				resize(new_capacity); 
-			}
-		} 
 		// Hoan vi 
 		void swap(Vector& other){ 
 			swap(data, other.data);
@@ -238,10 +218,6 @@ class Vector{
 			for(int i=0; i<size; i++){
 				cout<<data[i]<<endl;
 			}
-		}
-		// Tra ve dung luong toi da 
-		int max_size() const {
-			return capacity; 
 		}
 		// Kiem tra rong 
 		bool empty() const{ 
@@ -403,8 +379,17 @@ class HoaDon{
 			is>>hd.mahd;
 			cout<<"Nhap ma hang: ";
 			is>>hd.mahang;
-			cout<<"Nhap loai hoa don: ";
-			is>>hd.loaihd;
+			bool dif = false;
+			do{
+				cout<<"Nhap loai hoa don (Sell/Buy): ";
+				is>>hd.loaihd;
+				if(hd.loaihd == "Sell" || hd.loaihd == "Buy"){
+					dif = true;
+				}
+				else{
+					cout<<"Nhap sai loai hoa don, vui long nhap lai ..."<<endl;
+				}
+			}while(!dif);
 			cout<<"Nhap so luong hoa don: ";
 			is>>hd.slg;
 			cout<<"Nhap ngay mua ban: ";
@@ -514,7 +499,7 @@ class CuaHang{
 		            }
 		        } while (trunglap); 
 		        newmh.push_back(mh);
-			mathang.push_back(mh);			
+		        mathang.push_back(mh);
 			}
 			cout<<"\nDa nhap mat hang."<<endl;
 		}
