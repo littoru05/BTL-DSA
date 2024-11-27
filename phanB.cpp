@@ -68,7 +68,7 @@ class Vector{
 		void pop_back() {
 		    if(size > 0){
 		        --size; 
-		    } 
+		    }
 			else{
 				cout << "Vector da rong" << endl;
 		    }
@@ -583,30 +583,28 @@ class CuaHang{
 		void thongke() {
 		    cout << "\nThong ke so luong mat hang ton kho: " << endl;
 		    for (int i = 0; i < mathang.get_size(); i++) {
-		        int soLuongTon_file = 0;
-		        int vt=0;
-		        for (int j = 0; j < mathang.get_size(); j++) {
-		            if (mathang[i].get_mahang() == mathang[j].get_mahang()) {
-		                soLuongTon_file += mathang[j].get_sl();
-		            }
-		        }
-				for (int j = 0; j < hd.get_size(); j++) {
-		            if (hd[j].get_loaihd() == "Sell" && hd[j].get_mahang() == mathang[i].get_mahang()) {
-		                soLuongTon_file -= hd[j].get_slg();
-		                vt += j;
-		            }
+		        int soLuongTon_file = mathang[i].get_sl();
+		        for (int j = 0; j < hd.get_size(); j++) {
+		        	if(hd[j].get_mahang() == mathang[i].get_mahang()){
+		        		if (hd[j].get_loaihd() == "Sell") {
+			                soLuongTon_file -= hd[j].get_slg();
+			            }
+			            else if (hd[j].get_loaihd() == "Buy") {
+		                    soLuongTon_file += hd[j].get_slg();
+		                }
+					}
 		        }
 		        if(soLuongTon_file<0){
 		            	cout << "\nMa hang: " << mathang[i].get_mahang() << endl;
 						cout << "Ten hang: " << mathang[i].get_tenhang() << endl;
-						cout << "So luong ton kho: Chi ban duoc "<<mathang[i].get_sl()<<" mat hang , con "<<hd[vt].get_slg() - mathang[i].get_sl()<<" mat hang khong the ban duoc vi het hang"<<endl;
+						cout << "So luong ton kho: Chi ban duoc "<<mathang[i].get_sl()<<" mat hang , con "<<abs(soLuongTon_file)<<" mat hang khong the ban duoc vi het hang"<<endl;
 					}
-					else{
-		          		cout << "\nMa hang: " << mathang[i].get_mahang() << endl;
-						cout << "Ten hang: " << mathang[i].get_tenhang() << endl;
-						cout << "So luong ton kho: " << soLuongTon_file << endl;
-					}
-		        }
+				else{
+	          		cout << "\nMa hang: " << mathang[i].get_mahang() << endl;
+					cout << "Ten hang: " << mathang[i].get_tenhang() << endl;
+					cout << "So luong ton kho: " << soLuongTon_file << endl;
+				}
+		    }
 		    if (newmh.get_size() == 0) {
 		        cout << "\nKhong co mat hang nao duoc nhap." << endl;
 		    }
@@ -618,25 +616,21 @@ class CuaHang{
 		                break;
 		            }
 		        }
-				int soLuongTon_nhap = 0;
-				for (int j = 0; j < newmh.get_size(); j++) {
-		            if (newmh[j].get_mahang() == mathang[i].get_mahang()){
-		                soLuongTon_nhap += newmh[j].get_sl();
-		            }
-		        }
-		        if (!found) {
+				if (!found) {
 		            int soLuongTon_nhap = newmh[i].get_sl();
-		            int pos = 0;
-		            for (int j = 0; j < hd.get_size(); j++) {
-		                if (hd[j].get_loaihd() == "Sell" && hd[j].get_mahang() == newmh[i].get_mahang()) {
-		                    soLuongTon_nhap -= hd[j].get_slg();
-		                    pos += j;
-		                }
-		            }
+		            for (int j = 0; j < hd.get_size(); j++){
+		            	if(hd[j].get_mahang() == newmh[i].get_mahang()){
+		            		if (hd[j].get_loaihd() == "Sell") {
+			                    soLuongTon_nhap -= hd[j].get_slg();
+			                }else if (hd[j].get_loaihd() == "Buy") {
+			                    soLuongTon_nhap += hd[j].get_slg();
+			                }
+			            }
+					}
 		            if(soLuongTon_nhap<0){
 		            	cout << "\nMa hang: " << newmh[i].get_mahang() << endl;
 						cout << "Ten hang: " << newmh[i].get_tenhang() << endl;
-						cout << "So luong ton kho: Chi ban duoc "<<newmh[i].get_sl()<<" mat hang , con "<<hd[pos].get_slg() - newmh[i].get_sl()<<" mat hang khong the ban duoc vi het hang"<<endl;
+						cout << "So luong ton kho: Chi ban duoc "<<newmh[i].get_sl()<<" mat hang , con "<<abs(soLuongTon_nhap)<<" mat hang khong the ban duoc vi het hang"<<endl;
 					}
 					else{
 		          		cout << "\nMa hang: " << newmh[i].get_mahang() << endl;
