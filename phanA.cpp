@@ -93,10 +93,18 @@ class Node{
 				cout<<"Danh sach rong"<<endl;
 				return;
 			}
+			bool found = false;
 			for(const auto& emp : ds){
 				if(emp.salary_perf >= 2.5){
+					if(!found){
+						cout<<"Danh sach nhan vien co he so luong >= 2.5 la: "<<endl;
+					}
 					cout<<emp<<endl;
+					found = true;
 				}
+			}
+			if(!found){
+				cout<<"\nKhong co nhan vien co he so luong >= 2.5"<<endl;
 			}
 		}
 		void xoaNv(){
