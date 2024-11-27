@@ -125,7 +125,7 @@ class Vector{
 		    size -= (end - start + 1);
 		}
 		// Them phan tu tai vi tri cu the
-		void emplace(int index, T&& value) {
+		void emplace(int index, T& value) {
 		    if(index < 0 || index > size){
 		        cout << "\nNgoai pham vi" << endl;
 		        return;
